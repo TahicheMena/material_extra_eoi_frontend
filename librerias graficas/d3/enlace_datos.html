@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>D3.js</title>
+  <style>
+    .bar_chart {
+      fill: steelblue;
+    }
+    .bar_chart:hover {
+      fill: orange;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <h1>Prioridades</h1>
+    <svg width="600" height="200">Su navegador no puede visualizar la gráfica</svg>
+  </div>
+</body>
+
+<footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.11.0/d3.min.js"></script>
+  <script>
+    let data = [
+      {activity: "Videojuegos", priority: 10},
+      {activity: "Netflix", priority: 9},
+      {activity: "Comer Pizza", priority: 7},
+      {activity: "Comer Sano", priority: 3},
+      {activity: "Dormir", priority: 2}
+    ]
+  </script>
+  <script>
+    let svg = d3.select('svg');
+    let g = svg.selectAll("g")
+                .data(data)
+                .enter().append("g")
+                .attr("transform",function(d, i) {
+                  return "translate(" + (100*i+30) + "," + 50 + ")";
+                });
+
+    g.append("circle")
+     .attr("r", (d) => {
+       return d.priority * 2;
+     })
+     .attr("fill", "red")
+     .attr("fill-opacity", 0.2);
+
+    g.append("text")
+      .text( (d) => {
+        return d.activity;
+      });
+  </script>
+</footer>
+
+</html>

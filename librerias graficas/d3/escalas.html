@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>D3.js</title>
+  <style>
+    .bar_chart {
+      fill: steelblue;
+    }
+    .bar_chart:hover {
+      fill: orange;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <h1>Ansiedad</h1>
+    <svg width="1400" height="1000">Su navegador no puede visualizar la gráfica</svg>
+  </div>
+</body>
+
+<footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.11.0/d3.min.js"></script>
+  <script>
+    d3.json('https://tahichemena.github.io/curso_frontend_2019/graficas/data/stats_01.json')
+      .then( (response) => {
+        let svg = d3.select('svg');
+        let g = svg.selectAll("g")
+                   .data(response.data)
+                   .enter().append("g")
+                   .sort( (a, b) => {
+                    return b.ansiedad - a.ansiedad;
+                   });
+        
+        let max = d3.max(response.data, (d) => { // Determinamos la máxima ansiedad
+          return d.ansiedad;
+        });
+        let margin = {right: 50, left: 200};
+        let scale = d3.scaleLinear()
+                      .domain([0, max])
+                      .range([0,svg.attr('width') - margin.left - margin.right]);
+
+        g.append("rect")
+         .attr("height", 30)
+         .attr("width", (d) => {
+          return scale(d.ansiedad);
+         })
+         .attr("fill", "steelblue")
+         .attr("fill-opacity", 0.6)
+         .attr("transform",function(d, i) {
+          return "translate(" + margin.left + "," + (50*i + 50) + ")";
+         });
+
+        g.append("text")
+         .text( (d) => {
+          return d.momento;
+         })
+         .attr("font-size", "13")
+         .attr("transform",function(d, i) {
+          return "translate(" + 0 + "," + (50*i + 75) + ")";
+         });
+
+        g.append("text")
+         .text( (d) => {
+          return d.ansiedad;
+         })
+         .attr("font-size", "20")
+         .attr("transform",function(d, i) {
+          return "translate(" + (scale(d.ansiedad) + margin.left + 25) + "," + (50*i + 75) + ")";
+         });
+      }
+    );
+  </script>
+</footer>
+
+</html>

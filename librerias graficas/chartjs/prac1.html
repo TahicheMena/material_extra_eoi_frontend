@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>chart</title>
+</head>
+
+<body>
+    <main class="container">
+        <div>
+            <canvas id="chart" width="1000" height="500"></canvas>
+        </div>
+    </main>
+</body>
+
+<footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+    <script>
+        let myHeaders = new Headers();
+        let myInit = {
+            method: 'GET',
+            headers: myHeaders,
+            mode: 'cors',
+            cache: 'default'
+        };
+        let myRequest = new Request('https://tahichemena.github.io/curso_frontend_2019/graficas/data/stats_01.json', myInit);
+        fetch(myRequest)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (responseJson) {
+                drawChart(responseJson);
+            });
+    </script>
+
+    <script>
+        function drawChart(anxietyMoments) {
+            let momentos = [];
+            let ansiedades = [];
+            anxietyMoments.data.forEach(anxietyMoment => {
+                momentos.push(anxietyMoment.momento);
+                ansiedades.push(anxietyMoment.ansiedad);
+            });
+            new Chart(document.getElementById("chart"), {
+
+                type: 'bar',
+                data: {
+                    labels: momentos,
+                    datasets: [{
+                        label: "Ansiedad",
+                        data: ansiedades,
+                        backgroundColor: "rgba(255,150,0,0.25)",
+                        borderColor: "rgba(255,150,0,0.75)",
+                        borderWidth: 1
+                    }
+                    ]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Cantidad de ansiedad'
+                            },
+                            ticks:
+                            {
+                                beginAtZero: true
+                            }
+                        }]
+                    },
+                    title: {
+                        display: true,
+                        text: anxietyMoments.title
+                    }
+                }
+            })
+        }
+    </script>
+</footer>
+</html>

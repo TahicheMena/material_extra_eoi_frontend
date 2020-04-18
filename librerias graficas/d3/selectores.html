@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>D3.js</title>
+  <style>
+    .texts {
+      color: red;
+      font-size: 25px;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <h1>Propiedades</h1>
+    <svg id="svg_01" width="100" height="100" style="background-color: yellow">Su navegador no puede visualizar la gráfica
+        <circle cx="50" cy="50" r="20"/>
+    </svg>
+    <svg id="svg_02" width="100" height="100" style="background-color: blue">Su navegador no puede visualizar la gráfica</svg>
+    <svg id="svg_03" width="100" height="100" style="background-color: red">Su navegador no puede visualizar la gráfica</svg>
+    <p class="texts">Originalmente era rojo</p>
+    <p style="color: green">Originalmente era verde</p>
+  </div>
+</body>
+
+<footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.11.0/d3.min.js"></script>
+  <script>
+    let first_svg = d3.select("svg");
+    let all_svg = d3.selectAll("svg");
+    let texts = d3.selectAll(".texts");
+    let first_circle_svg = d3.select("#svg_01 circle");
+
+    texts.style("font-size", "35px")
+          .style("color", "purple");
+    all_svg.style("background-color", "grey");
+    first_svg.style("background-color", "green");
+    first_circle_svg.style("fill","orange")
+                    .attr('r', 10);
+  </script>
+</footer>
+
+</html>

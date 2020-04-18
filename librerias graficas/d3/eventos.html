@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>D3.js</title>
+  <style>
+    .texts {
+      color: red;
+      font-size: 25px;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <h1>Normal</h1>
+    <svg width="300" height="100">Su navegador no puede visualizar la gráfica
+        <circle cx="50" cy="50" r="20"/>
+        <circle cx="100" cy="50" r="20"/>
+        <circle cx="150" cy="50" r="20"/>
+        <circle cx="200" cy="50" r="20"/>
+        <circle cx="250" cy="50" r="20"/>
+    </svg>
+  </div>
+  <div>
+    <h1>Función anónima</h1>
+    <svg id="svg_01" width="300" height="100">Su navegador no puede visualizar la gráfica
+        <circle cx="50" cy="50" r="20"/>
+        <circle cx="100" cy="50" r="20"/>
+        <circle cx="150" cy="50" r="20"/>
+        <circle cx="200" cy="50" r="20"/>
+        <circle cx="250" cy="50" r="20"/>
+    </svg>
+  </div>
+  <div>
+    <h1>Bucle</h1>
+    <svg id="svg_02" width="300" height="100">Su navegador no puede visualizar la gráfica
+        <circle cx="50" cy="50" r="20"/>
+        <circle cx="100" cy="50" r="20"/>
+        <circle cx="150" cy="50" r="20"/>
+        <circle cx="200" cy="50" r="20"/>
+        <circle cx="250" cy="50" r="20"/>
+    </svg>
+  </div>
+  <div>
+    <h1>Filtro</h1>
+    <svg id="svg_03" width="300" height="100">Su navegador no puede visualizar la gráfica
+        <circle cx="50" cy="50" r="20"/>
+        <circle cx="100" cy="50" r="20"/>
+        <circle cx="150" cy="50" r="20"/>
+        <circle cx="200" cy="50" r="20"/>
+        <circle cx="250" cy="50" r="20"/>
+    </svg>
+  </div>
+  <div>
+    <h1>Eventos</h1>
+    <svg id="svg_04" width="300" height="100">Su navegador no puede visualizar la gráfica
+        <circle cx="50" cy="50" r="20" style="fill:chocolate; cursor:pointer; stroke: #555; stroke-width:0px" />
+        <circle cx="100" cy="50" r="20" style="fill:chocolate; cursor:pointer; stroke: #555; stroke-width:0px" />
+        <circle cx="150" cy="50" r="20" style="fill:chocolate; cursor:pointer; stroke: #555; stroke-width:0px" />
+        <circle cx="200" cy="50" r="20" style="fill:chocolate; cursor:pointer; stroke: #555; stroke-width:0px" />
+        <circle cx="250" cy="50" r="20" style="fill:chocolate; cursor:pointer; stroke: #555; stroke-width:0px" />
+    </svg>
+  </div>
+</body>
+
+<footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.11.0/d3.min.js"></script>
+  <script>
+    d3.selectAll("#svg_01 circle")
+      .style("fill", (d, i) => {
+        return d3.rgb(Math.random() * i * 100,Math.random() * i * 100,Math.random() * i * 100);
+      })
+      .attr("r", d => {
+        return 10 + Math.random() * 20;
+      });
+  </script>
+  <script>
+    function alternate(d, i) {
+      let odd = i % 2 === 1;
+
+      d3.select(this)
+        .style('fill', odd ? 'orange' : '#ddd')
+        .attr('r', odd ? 20 : 15);
+    }
+  </script>
+  <script>
+    d3.selectAll("#svg_02 circle")
+      .each(alternate);
+  </script>
+  <script>  
+    d3.selectAll("#svg_03 circle")
+      .filter( (d,i) => {
+        return ( i != 2);
+      })
+      .each(alternate);
+  </script>
+  <script>
+    function handleMouseOver() {
+      d3.select(this)
+        .style('fill', "orange")
+    }
+    function handleMouseOut() {
+      d3.select(this)
+        .style('fill', "chocolate");
+    }
+    function handleMouseClick() {
+      let circle = d3.select(this);
+      if (circle.attr('selected')) {
+        circle.style('stroke-width','0px')
+              .attr('selected', null);
+      } else {
+        circle.style('stroke-width','2px')
+              .attr('selected', true); 
+      }
+    }
+  </script>
+  <script>  
+    d3.selectAll("#svg_04 circle")
+      .on("mouseover", handleMouseOver)
+      .on("mouseout", handleMouseOut)
+      .on("click", handleMouseClick);
+  </script>
+</footer>
+
+</html>

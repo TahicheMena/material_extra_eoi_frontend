@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>D3.js</title>
+    <style>
+        .barra {
+            fill: #ccc;
+        }
+
+        .barra:hover {
+            fill: orange;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h1>Ansiedad</h1>
+    </div>
+</body>
+
+<footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.11.0/d3.min.js"></script>
+    <script>
+        // Esto es un ejemplo para que vean que el uso de grupos es opcional, pero fuertemente recomendable,
+        // para evitar tener que hacer el enlace de datos cada vez que queremos añadir algún elemento
+        // asociado al mismo dato.
+        // Como ejemplo, para la gráfica que se vio en clase, necesitamos usar una barra (rect) y dos textos (text)
+        // Con grupo solo tendríamos un enlace, pero, como verán más abajo, sin grupos necesitaremos 3
+        // ----------
+
+        // En este ejemplo no hay ni svg, directamente cogemos el body y creamos el svg
+        let svg = d3.select("body").append("svg")
+            .attr("width", 1400)
+            .attr("height", 1000);
+        d3.json('https://tahichemena.github.io/curso_frontend_2019/graficas/data/stats_01.json')
+            .then((response) => {
+
+                // Usando la "magia" de d3 creamos un array de elementos con clase barras
+                let barras = svg.selectAll(".barra")
+                    .data(response.data)
+                    .enter().append("rect");
+
+                // Para cada barra que se crea, se le añade los atributos
+                barras.attr("height", 30)
+                    .attr("width", (d) => {
+                        return d.ansiedad * 100;
+                    })
+                    .attr("class", "barra")
+                    .attr("transform", function (d, i) {
+                        return "translate(" + 200 + "," + (50 * i + 50) + ")";
+                    });
+
+                // Como ahora no estamos usando grupos, debemos de volver a hacer una enlace de datos para
+                // crear un array de elementos y meter las etiquetas
+                let labels = svg.selectAll("cuentalaleyendaqueunavezmanznotuvobarba")
+                    .data(response.data)
+                    .enter().append("text");
+
+                labels.text((d) => {
+                        return d.momento;
+                    })
+                    .attr("font-size", "13")
+                    .attr("transform", function (d, i) {
+                        return "translate(" + 0 + "," + (50 * i + 75) + ")";
+                    });
+
+                // De nuevo, como no estamos usando grupos, debemos de volver a hacer otro enlace más de datos
+                let values = svg.selectAll("todavianoexisto")
+                    .data(response.data)
+                    .enter().append("text");
+
+                values.text((d) => {
+                        return d.ansiedad;
+                    })
+                    .attr("font-size", "20")
+                    .attr("transform", function (d, i) {
+                        return "translate(" + (d.ansiedad * 100 + 225) + "," + (50 * i + 75) + ")";
+                    });
+            }
+            );
+    </script>
+</footer>
+
+</html>
