@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>D3.js</title>
+  <style>
+    .bar_chart {
+      fill: steelblue;
+    }
+    .bar_chart:hover {
+      fill: orange;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <h1>Ansiedad</h1>
+    <svg width="1400" height="500">Su navegador no puede visualizar la gráfica</svg>
+  </div>
+</body>
+
+<footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.11.0/d3.min.js"></script>
+  <script>
+    d3.json('https://tahichemena.github.io/curso_frontend_2019/graficas/data/stats_01.json')
+      .then( (response) => {
+        let svg = d3.select('svg');
+        let g = svg.selectAll("g")
+                   .data(response.data)
+                   .enter().append("g")
+                   .sort( (a, b) => {
+                    return b.ansiedad - a.ansiedad;
+                   });
+        
+        let max = d3.max(response.data, (d) => { // Determinamos la máxima ansiedad
+          return d.ansiedad;
+        });
+        let margin = {right: 50, left: 250, top: 50, bottom: 50};
+        let innerWidth = svg.attr('width') - margin.left - margin.right;
+        let xScale = d3.scaleLinear()
+                      .domain([0, max])
+                      .range([0, innerWidth]);
+        let innerHeight = svg.attr('height') - margin.top - margin.bottom;
+        let yScale = d3.scaleBand()
+                       .domain(response.data.map( (d) => { 
+                         return d.momento;
+                       }))
+                       .rangeRound([0,innerHeight])
+                       .paddingInner(0.05)
+                       .paddingOuter(0.05);
+                  
+        g.append("rect")
+         .attr("height", yScale.bandwidth())
+         .attr("width", (d) => {
+          return xScale(d.ansiedad);
+         })
+         .attr("fill", "steelblue")
+         .attr("fill-opacity", 0.6)
+         .attr("transform",function(d, i) {
+          return "translate(" + margin.left + "," + yScale(d.momento) + ")";
+         });
+
+        let xAxis = d3.axisBottom(xScale)
+                      .ticks(10);
+        let yAxis = d3.axisLeft(yScale);
+  
+        svg.append('g') // Añadimos un grupo con los elementos del eje
+           .attr("transform", "translate(" + margin.left + "," + innerHeight + ")")
+           .call(xAxis);
+
+        svg.append('g') // Añadimos un grupo con los elementos del eje
+           .attr("transform", "translate(" + margin.left + ",0)")
+           .call(yAxis);
+      }
+    );
+
+  </script>
+</footer>
+
+</html>

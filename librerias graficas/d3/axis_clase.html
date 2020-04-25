@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>D3.js</title>
+    <style>
+        .bar_chart {
+            fill: steelblue;
+        }
+        .bar_chart:hover {
+            fill: orange;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h1>Ansiedad</h1>
+        <svg width="1400" height="500">Su navegador no puede visualizar la gráfica</svg>
+    </div>
+</body>
+
+<footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.11.0/d3.min.js"></script>
+    <script>
+        d3.json('https://tahichemena.github.io/curso_frontend_2019/graficas/data/stats_01.json')
+            .then((response) => {
+                let svg = d3.select('svg');
+                let g = svg.selectAll("g")
+                    .data(response.data)
+                    .enter().append("g")
+                    .sort((a, b) => {
+                        return b.ansiedad - a.ansiedad;
+                    });
+                // Calculamos el valor máximo para poder determinar el rango origen (dominio)
+                let max = d3.max(response.data, (d) => {
+                    return d.ansiedad;
+                });
+                // Establecemos unos margenes, dentro del svg, para que se vea mejor los elementos que componen la gráfica
+                let margin = { right: 50, left: 250, top: 50, bottom: 50 };
+                let innerWidth = svg.attr('width') - margin.left - margin.right;
+                // Escalamos, linealmente, los valores de ansiedad al rango destino (range) para que quepan
+                // en el valor máximo del svg que contiene la gráfica
+                let xScale = d3.scaleLinear()
+                    .domain([0, max])
+                    .range([0, innerWidth]);
+                let innerHeight = svg.attr('height') - margin.top - margin.bottom;
+                // Escalamos, por bandas, los distintos momentos de ansiedad (domain) para obtener su valor
+                // conforme la máxima altura posible dentro del svg que contiene la gráfica
+                let yScale = d3.scaleBand()
+                    .domain(response.data.map((d) => {
+                        return d.momento;
+                    }))
+                    .rangeRound([0, innerHeight])
+                    .paddingInner(0.05)
+                    .paddingOuter(0.05);
+                // Creamos las barras y escalamos su alto y ancho conforme a las escalas de los ejes
+                g.append("rect")
+                    .attr("class", "bar_chart")
+                    .attr("height", yScale.bandwidth())
+                    .attr("width", (d) => {
+                        return xScale(d.ansiedad);
+                    })
+                    .attr("transform", function (d, i) {
+                        return "translate(" + margin.left + "," + yScale(d.momento) + ")";
+                    })
+                    // Se quiere tratar la barra que está enlazada con el momento de "Piña en la pizza"
+                    // de forma especial, para que en esta, se añada una imagen de piña repetida sobre
+                    // toda la barra
+                    .each((d) => {
+                        if (d.momento == "Piña en la pizza") { // Nos aseguramos de sólo aplicar el efecto en la barra adecuada
+                            let momento = d.momento;
+                            // Calculamos el número de piñas que necesitamos para rellenar toda la barra.
+                            // Se redondea a la baja para que no quede ninguna piña colada, esto, cortada ;)
+                            let num_piñas = Math.floor(xScale(d.ansiedad) / yScale.bandwidth());
+                            // Por cada piña, se añade un elemento "image" con sus medidas ajustadas y posicionado de forma
+                            // que no se solapen
+                            for (var i = 0; i < (num_piñas - 1); i++) {
+                                svg.append("image")
+                                    .attr("height", yScale.bandwidth())
+                                    .attr("width", yScale.bandwidth())
+                                    .attr("transform", () => {
+                                        let x = margin.left + (xScale(i));
+                                        return "translate(" + x +"," + yScale(momento) + ")";
+                                    })
+                                    .attr("href", "https://image.flaticon.com/icons/svg/1135/1135451.svg");
+                            }
+                        }
+                    });
+                // Creamos los ejes horizontal(abajo) y vertical(izquierda)
+                let xAxis = d3.axisBottom(xScale)
+                    .ticks(20);
+                let yAxis = d3.axisLeft(yScale);
+
+                svg.append('g') // Añadimos un grupo donde se crearán los distintos elementos que conformarán el eje
+                    .attr("transform", "translate(" + margin.left + "," + innerHeight + ")")
+                    .call(xAxis);
+                svg.append('g') // Añadimos un grupo donde se crearán los distintos elementos que conformarán el eje
+                    .attr("transform", "translate(" + margin.left + ",0)")
+                    .call(yAxis);
+            }
+            );
+
+    </script>
+</footer>
+
+</html>
