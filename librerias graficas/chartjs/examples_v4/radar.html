@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Chartjs</title>
+  </head>
+
+  <body>
+    <main class="container">
+      <div>
+        <!-- Canvas dónde se dibuja la gráfica -->
+        <canvas id="chart" width="1000" height="500"
+          >Su navegador no puede visualizar la gráfica</canvas
+        >
+      </div>
+    </main>
+  </body>
+
+  <footer>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      const chartElement = document.getElementById("chart");
+      const chart = new Chart(chartElement, {
+        type: "radar",
+        data: {
+          labels: ["Poder", "Velocidad", "Alcance", "Técnica", "Energía"],
+          datasets: [
+            {
+              label: "Bills",
+              fill: true,
+              backgroundColor: "RGBA(170,142,182,0.35)",
+              borderColor: "#786382",
+              pointBorderColor: "#fff",
+              pointBackgroundColor: "#786382",
+              data: [8, 8, 6, 10, 10],
+            },
+            {
+              label: "Son Goku (SSB)",
+              fill: true,
+              backgroundColor: "RGBA(243,132,49,0.35)",
+              borderColor: "#672209",
+              pointBorderColor: "#fff",
+              pointBackgroundColor: "#672209",
+              pointBorderColor: "#fff",
+              data: [8, 10, 6, 8, 4],
+            },
+            {
+              label: "Vegeta (SSB)",
+              fill: true,
+              backgroundColor: "RGBA(40,92,186,0.35)",
+              borderColor: "#112e6e",
+              pointBorderColor: "#fff",
+              pointBackgroundColor: "#112e6e",
+              pointBorderColor: "#fff",
+              data: [10, 8, 4, 6, 8],
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            r: {
+              pointLabels: {
+                font: {
+                  size: 20,
+                },
+              },
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          },
+          plugins: {
+            title: {
+              display: true,
+              text: "Estadísticas de los luchadores de Dragon Ball FighterZ",
+              font: {
+                size: 24,
+                weight: "bold",
+              },
+            },
+          },
+        },
+      });
+    </script>
+  </footer>
+</html>

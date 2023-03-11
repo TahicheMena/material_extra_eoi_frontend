@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Chartjs</title>
+  </head>
+  <body>
+    <main class="container">
+      <div>
+        <!-- Canvas donde se dibuja la gráfica -->
+        <canvas id="prioridades" width="1000" height="500">
+          Su navegador no puede visualizar la gráfica
+        </canvas>
+      </div>
+    </main>
+    <footer>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script>
+        const prioridadesCanvas = document.getElementById("prioridades");
+        Chart.defaults.font.size = 18;
+
+        new Chart(prioridadesCanvas, {
+          type: "bar",
+          data: {
+            labels: [
+              "Videojuegos",
+              "Netflix",
+              "Comer pizza",
+              "Comer sano",
+              "Dormir",
+            ],
+            datasets: [
+              {
+                label: "Mis Prioridades",
+                data: [10, 9, 7, 3, 2],
+                backgroundColor: "rgba(255,150,0,0.25)",
+                borderColor: "rgba(255,150,0,0.75)",
+                borderWidth: 1,
+              },
+              {
+                label: "Prioridades de Vega",
+                data: [0, 1, 9, 3, 10],
+                backgroundColor: "rgba(0,0,255,0.25)",
+                borderColor: "rgba(0,0,255,0.75)",
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  stepSize: 1,
+                },
+              },
+            },
+            plugins: {
+              title: {
+                display: true,
+                text: "Prioridades",
+              },
+            },
+            animation: {
+              duration: 2000,
+            },
+          },
+        });
+      </script>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Chartjs</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <div>
+            <!-- Canvas dónde se dibuja la gráfica -->
+            <canvas id="chart">Su navegador no puede visualizar la gráfica</canvas>
+        </div>
+    </main>
+</body>
+
+<footer>
+    <script>
+        Chart.defaults.font.size = 20;
+        new Chart(document.getElementById("chart"), {
+            type: 'polarArea',
+            data: {
+                labels: ["Pokemon Red/Blue", "Pokemon Gold/Silver", "Pokemon Platino", "Pokemon Esmeralda", "Pokemon XY"],
+                datasets: [{
+                    label: "Unidades vendidas (millions)",
+                    backgroundColor: ["rgba(174,29,23,0.5)", "rgba(144,121,72,0.5)","rgba(173,209,236,0.5)","rgba(232,195,185,0.5)","rgba(66,116,102,0.5)", "rgba(37,94,153,0.5)"],
+                    borderColor: ["#ae1d17", "#907948","#add1ec","#e8c3b9","#427466", "#255e99"],
+                    data: [46.02,29.49,25.27,23.28,16.37]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                title: {
+                    display: true,
+                    text: 'Ventas de la saga Pokemon (millones)'
+                }
+            }
+        });
+    </script>
+</footer>
+
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Chartjs</title>
+</head>
+
+<body>
+    <main class="container">
+        <div>
+            <!-- Canvas dónde se dibuja la gráfica -->
+            <canvas id="chart" width="1000" height="500">Su navegador no puede visualizar la gráfica</canvas>
+        </div>
+    </main>
+</body>
+
+<footer>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        Chart.defaults.font.size = 20;
+        new Chart(document.getElementById("chart"), {
+            type: 'pie',
+            data: {
+                labels: ["Reirme y esperar que no espere respuesta", "Decir que no he podido escuchar", "QUEEE??!", "Entrecerrar los ojos y pegar más la oreja"],
+                datasets: [{
+                    label: "Porcentaje de veces",
+                    backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+                    data: [77,4,9,15]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Lo que hago cuando no puedo escuchar a alguien'
+                    },
+                }
+            }
+        });
+    </script>
+</footer>
+
+</html>
